@@ -8,6 +8,10 @@ Intermediate/
 # 忽略编辑器自动生成的文件
 Binaries/
 DerivedDataCache/
+Content/Developers/
+Content/Collections/
+Content/__ExternalActors__/
+Content/__ExternalObjects__/
 
 # Visual Studio files and folder
 .vs/
