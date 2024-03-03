@@ -5,8 +5,11 @@
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon"); // 没有用TEXT("")文本宏是因为这个函数的第一个参数是FName，不需要TEXT("")宏，如果是FString的话就需要了。
+	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
+	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AAuraCharacterBase::BeginPlay()
@@ -14,16 +17,3 @@ void AAuraCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
-
-void AAuraCharacterBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void AAuraCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
