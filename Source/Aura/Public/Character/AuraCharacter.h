@@ -18,6 +18,11 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase
 	GENERATED_BODY()
 public:
 	AAuraCharacter();
+	virtual void PossessedBy(AController* NewController);
+	virtual void OnRep_PlayerState();
+
+private:
+	void InitAbilityActorInfo();
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
