@@ -11,7 +11,7 @@
 AAuraEffectActor::AAuraEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
+	
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
@@ -55,6 +55,7 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 	{
 		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
 	}
+
 	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 	{
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);

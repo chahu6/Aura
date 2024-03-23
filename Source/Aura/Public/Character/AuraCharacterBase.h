@@ -23,6 +23,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void InitAbilityActorInfo();
+
+protected:
+
 	UPROPERTY(VisibleAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
