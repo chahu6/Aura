@@ -10,8 +10,6 @@ Binaries/
 DerivedDataCache/
 Content/Developers/
 Content/Collections/
-Content/__ExternalActors__/
-Content/__ExternalObjects__/
 
 # Visual Studio files and folder
 .vs/
@@ -20,6 +18,4 @@ Content/__ExternalObjects__/
 *.vcxproj.user
 *.vcxproj.filters
 *.csproj
-
-
-
+.vsconfig

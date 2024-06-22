@@ -17,6 +17,7 @@ void UAuraAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
 
+	// 在C++中初始化GameplayTag
 	FAuraGameplayTags::InitializeNativeGameplayTags();
 
 	// 这个是必须的一个初始化，不然TargetData不能用，InitTargetDataScriptStructCache()主要是这个
