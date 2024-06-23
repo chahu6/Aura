@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "AuraGameplayTags.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -121,6 +122,20 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				TagComtainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagComtainer);
 			}
+
+			ShowFloatingDamageText(Props, LocalInComingDamage);
+		}
+	}
+}
+
+void UAuraAttributeSet::ShowFloatingDamageText(const FEffectProperties& Props, float Damage) const
+{
+	if (!IsValid(Props.SourceCharacter) || !IsValid(Props.TargetCharacter)) return;
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceController))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }

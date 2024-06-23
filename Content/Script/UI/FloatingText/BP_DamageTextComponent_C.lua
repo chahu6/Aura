@@ -1,3 +1,4 @@
+local Screen = require("Utils.Screen")
 --
 -- DESCRIPTION
 --
@@ -8,6 +9,8 @@
 
 ---@type BP_DamageTextComponent_C
 local M = UnLua.Class()
+
+-- local Delay = 
 
 -- function M:Initialize(Initializer)
 -- end
@@ -21,8 +24,21 @@ local M = UnLua.Class()
 -- function M:ReceiveTick(DeltaSeconds)
 -- end
 
-function M:SetDamageText()
-    
+local function run(self)
+    UE.UKismetSystemLibrary.Delay(self, 1)
+    self:K2_DestroyComponent(self)
 end
+
+function M:SetDamageText(Damage)
+    local UWidget = self:GetUserWidgetObject()
+    local WBP_DamageTextClass = UE.UClass.Load("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprints/UI/FloatingText/WBP_DamageText.WBP_DamageText_C'")
+    local DamageText = UWidget:Cast(WBP_DamageTextClass)
+    if DamageText then
+        DamageText:UpdateDamageText(Damage)
+        coroutine.resume(coroutine.create(run), self)
+    end
+end
+
+
 
 return M
