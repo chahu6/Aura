@@ -9,8 +9,8 @@
 ---@type WBP_ProgressBar_C
 local M = UnLua.Class()
 
---function M:Initialize(Initializer)
---end
+-- function M:Initialize(Initializer)
+-- end
 
 --function M:PreConstruct(IsDesignTime)
 --end

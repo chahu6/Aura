@@ -48,6 +48,10 @@ void AAuraProjectile::BeginPlay()
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (DamageEffectSpaceHandle.Data.IsValid() && DamageEffectSpaceHandle.Data.Get()->GetEffectContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	if (LoopingSoundComponent)
