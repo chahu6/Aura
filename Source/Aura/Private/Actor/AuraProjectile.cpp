@@ -10,6 +10,7 @@
 #include "Components/AudioComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
 AAuraProjectile::AAuraProjectile()
 {
@@ -35,7 +36,10 @@ void AAuraProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
+	if (HasAuthority())
+	{
+		Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
+	}
 }
 
 void AAuraProjectile::BeginPlay()
@@ -48,7 +52,11 @@ void AAuraProjectile::BeginPlay()
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (DamageEffectSpaceHandle.Data.IsValid() && DamageEffectSpaceHandle.Data.Get()->GetEffectContext().GetEffectCauser() == OtherActor)
+	if (!DamageEffectSpaceHandle.Data.IsValid() && DamageEffectSpaceHandle.Data.Get()->GetEffectContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
+	if (!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpaceHandle.Data.Get()->GetEffectContext().GetEffectCauser(), OtherActor))
 	{
 		return;
 	}

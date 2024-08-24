@@ -12,8 +12,8 @@ local M = UnLua.Class()
 -- function M:Initialize(Initializer)
 -- end
 
---function M:PreConstruct(IsDesignTime)
---end
+-- function M:PreConstruct(IsDesignTime)
+-- end
 
 function M:Construct()
     self:SetBarVisible(false)

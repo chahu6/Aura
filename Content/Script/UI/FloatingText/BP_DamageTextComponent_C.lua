@@ -29,8 +29,8 @@ end
 
 function M:SetDamageText(Damage, bBlockedHit, bCriticalHit)
     local UWidget = self:GetUserWidgetObject()
-    local WBP_DamageTextClass = UE.UClass.Load("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprints/UI/FloatingText/WBP_DamageText.WBP_DamageText_C'")
-    local DamageText = UWidget:Cast(WBP_DamageTextClass)
+    -- local WBP_DamageTextClass = UE.UClass.Load("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprints/UI/FloatingText/WBP_DamageText.WBP_DamageText_C'")
+    local DamageText = UWidget:Cast(self.WidgetClass)
     if DamageText then
         DamageText:UpdateDamageText(Damage, bBlockedHit, bCriticalHit)
         coroutine.resume(coroutine.create(run), self)
