@@ -42,8 +42,8 @@ function M:AttributeMenuClose_Event()
 end
 
 function M:WidgetControllerSet()
-    self.WBP_HealthGlobe:SetWidgetController(self.WidgetController)
-    self.WBP_ManaGlobe:SetWidgetController(self.WidgetController)
+    self.WBP_HealthManaSpells:SetWidgetController(self.WidgetController)
+    self.New
     self.WidgetController.MessageWidgetRowDelegate:Add(self, self.MessageWidgetRowDelegate_Event)
 end
 

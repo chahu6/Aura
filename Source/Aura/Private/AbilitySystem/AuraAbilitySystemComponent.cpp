@@ -21,6 +21,8 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 			GiveAbility(AbilitySpec);
 		}
 	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
@@ -31,7 +33,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 {
 	if (!InputTag.IsValid()) return;
 
-	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
@@ -54,6 +56,54 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 		{
 			AbilitySpecInputReleased(AbilitySpec);
 		}
+	}
+}
+
+void UAuraAbilitySystemComponent::ForEachAbility(TFunctionRef<void(const FGameplayAbilitySpec&)> Callback)
+{
+	ABILITYLIST_SCOPE_LOCK()
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities()) // ActivatableAbilities.Items
+	{
+		Callback(AbilitySpec);
+	}
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (AbilitySpec.Ability)
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability->AbilityTags)
+		{
+			if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities"))))
+			{
+				return Tag;
+			}
+		}
+	}
+	return FGameplayTag();
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec) const
+{
+	for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
+		{
+			return Tag;
+		}
+	}
+	return FGameplayTag();
+}
+
+void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+
+	if (!bStartupAbilitiesGiven)
+	{
+		bStartupAbilitiesGiven = true;
+		AbilitiesGivenDelegate.Broadcast(this);
 	}
 }
 
