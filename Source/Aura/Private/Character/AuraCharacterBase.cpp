@@ -88,6 +88,11 @@ void AAuraCharacterBase::IncremenetMinionCount_Implementation(int32 Amount)
 	MinionCount += Amount;
 }
 
+ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation() const
+{
+	return CharacterClass;
+}
+
 void AAuraCharacterBase::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
@@ -151,6 +156,7 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 
 	AuraASC->AddCharacterAbilities(StartupAbilities);
+	AuraASC->AddCharacterPassiveAbilities(PassiveAbilities);
 }
 
 void AAuraCharacterBase::Dissolve()
