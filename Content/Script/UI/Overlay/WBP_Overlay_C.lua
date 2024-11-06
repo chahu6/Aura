@@ -43,8 +43,10 @@ end
 
 function M:WidgetControllerSet()
     self.WBP_HealthManaSpells:SetWidgetController(self.WidgetController)
-    self.New
+    self.WBP_XPBar:SetWidgetController(self.WidgetController)
+    self.WBP_ValueGlobe:SetWidgetController(self.WidgetController)
     self.WidgetController.MessageWidgetRowDelegate:Add(self, self.MessageWidgetRowDelegate_Event)
+    self.WidgetController.OnPlayerLevelChangedDelegate:Add(self, self.OnPlayerLevelChangedDelegate_Event)
 end
 
 function M:MessageWidgetRowDelegate_Event(Row)

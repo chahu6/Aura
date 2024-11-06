@@ -20,7 +20,23 @@ function M:Construct()
     self:SetAttributeTags()
     local WidgetController = UE.UAuraAbilitySystemLibrary.GetAttributeMenuWidgetController(self)
     self:SetWidgetController(WidgetController)
+    self.WBP_AttributePointsRow:SetWidgetController(WidgetController)
+    WidgetController.OnAttributePointsChangedDelegate:Add(self, self.SetButtonsEnabled)
     WidgetController:BroadcastInitialValue()
+end
+
+function M:SetButtonsEnabled(AttributePoints)
+    if AttributePoints > 0 then
+        self.Row_Intelligence:SetButtonEnabled(true)
+        self.Row_Strength:SetButtonEnabled(true)
+        self.Row_Resilience:SetButtonEnabled(true)
+        self.Row_Vigor:SetButtonEnabled(true)
+    else
+        self.Row_Intelligence:SetButtonEnabled(false)
+        self.Row_Strength:SetButtonEnabled(false)
+        self.Row_Resilience:SetButtonEnabled(false)
+        self.Row_Vigor:SetButtonEnabled(false)
+    end
 end
 
 --function M:Tick(MyGeometry, InDeltaTime)
