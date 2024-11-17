@@ -22,8 +22,11 @@ class AURA_API AAuraCharacterBase : public ACharacter, public ICombatInterface, 
 
 public:
 	AAuraCharacterBase();
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	/** Ability System Interface */
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	/** end Ability System Interface */
 
 	/** Combat Interface */
 	virtual void Die() override;

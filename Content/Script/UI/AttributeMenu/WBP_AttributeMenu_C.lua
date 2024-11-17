@@ -18,11 +18,11 @@ local M = UnLua.Class()
 function M:Construct()
     self.CloseButton.Button.OnClicked:Add(self, self.OnClicked_Close)
     self:SetAttributeTags()
-    local WidgetController = UE.UAuraAbilitySystemLibrary.GetAttributeMenuWidgetController(self)
-    self:SetWidgetController(WidgetController)
-    self.WBP_AttributePointsRow:SetWidgetController(WidgetController)
-    WidgetController.OnAttributePointsChangedDelegate:Add(self, self.SetButtonsEnabled)
-    WidgetController:BroadcastInitialValue()
+    self.AttributeMenuWidgetController = UE.UAuraAbilitySystemLibrary.GetAttributeMenuWidgetController(self)
+    self:SetWidgetController(self.AttributeMenuWidgetController)
+    self.WBP_AttributePointsRow:SetWidgetController(self.AttributeMenuWidgetController)
+    self.AttributeMenuWidgetController.OnAttributePointsChangedDelegate:Add(self, self.SetButtonsEnabled)
+    self.AttributeMenuWidgetController:BroadcastInitialValue()
 end
 
 function M:SetButtonsEnabled(AttributePoints)
@@ -44,6 +44,7 @@ end
 
 function M:Destruct()
     self.AttributeMenuClose:Broadcast()
+    self.AttributeMenuWidgetController.OnAttributePointsChangedDelegate:Clear()
 end
 
 function M:OnClicked_Close()
