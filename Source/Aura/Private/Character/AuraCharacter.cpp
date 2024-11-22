@@ -170,6 +170,8 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
+	OnASCRegisteredDelegate.Broadcast(AbilitySystemComponent);
+
 	// ≥ı ºªØOverlay
 	if (AAuraPlayerController* AuraPlayerController = GetController<AAuraPlayerController>())
 	{

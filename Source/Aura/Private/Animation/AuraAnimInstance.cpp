@@ -3,6 +3,7 @@
 
 #include "Animation/AuraAnimInstance.h"
 #include "Character/AuraCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UAuraAnimInstance::NativeInitializeAnimation()
 {
@@ -21,4 +22,6 @@ void UAuraAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	GroundSpeed = AuraCharacter->GetVelocity().Size2D();
 	bShouldMove = GroundSpeed > 3.0f;
+
+	bIsInAir = AuraCharacter->GetCharacterMovement()->IsFalling();
 }
