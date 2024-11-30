@@ -30,9 +30,16 @@ protected:
 
 	virtual void Destroyed() override;
 
+	void OnHit();
+
+	bool IsValidOverlap(AActor* OtherActor);
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetComponent;
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	FDamageEffectParams DamageEffectParams;

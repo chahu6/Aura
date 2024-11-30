@@ -347,3 +347,31 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect(const 
 
 	return EffectContexthandle;
 }
+
+TArray<FRotator> UAuraAbilitySystemLibrary::EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, float Spread, int32 NumRotators)
+{
+	TArray<FRotator> Rotations;
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-Spread / 2.f, Axis);
+	const float DeltaSpread = Spread / (NumRotators + 1);
+
+	for (int32 i = 1; i <= NumRotators; ++i)
+	{
+		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, Axis);
+		Rotations.Add(Direction.Rotation());
+	}
+	return Rotations;
+}
+
+TArray<FVector> UAuraAbilitySystemLibrary::EvenlySpacedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors)
+{
+	TArray<FVector> Vectors;
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-Spread / 2.f, Axis);
+	const float DeltaSpread = Spread / (NumVectors + 1);
+
+	for (int32 i = 1; i <= NumVectors; ++i)
+	{
+		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, Axis);
+		Vectors.Add(Direction);
+	}
+	return Vectors;
+}

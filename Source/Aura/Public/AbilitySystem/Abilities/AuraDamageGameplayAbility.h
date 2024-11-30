@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
+	UFUNCTION(BlueprintPure)
+	float GetDamageAtLevel() const;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
@@ -51,7 +54,7 @@ protected:
 	float DeathImpulseMagnitude = 9000.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	float KnockbackForceChance = 10.f;
+	float KnockbackChance = 10.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float KnockbackForceMagnitude = 500.f;

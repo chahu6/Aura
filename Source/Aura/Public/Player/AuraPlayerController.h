@@ -15,6 +15,7 @@ class IEnemyInterface;
 class UAuraInputConfig;
 class UAuraAbilitySystemComponent;
 class USplineComponent;
+class UNiagaraSystem;
 
 /**
  * 
@@ -41,7 +42,6 @@ private:
 	void ShiftReleased() { bShiftKeyDown = false; }
 
 	void CursorTrace();
-
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -60,6 +60,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	bool bShiftKeyDown = false;
 

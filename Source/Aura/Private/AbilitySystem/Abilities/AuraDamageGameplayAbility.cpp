@@ -33,7 +33,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DamageGameplayEffectClass = DamageEffectClass;
 	Params.SourceAbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
 	Params.TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	Params.BaseDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+	Params.BaseDamage = GetDamageAtLevel();
 	Params.AbilityLevel = GetAbilityLevel();
 	Params.DamageType = DamageType;
 	Params.DebuffChance = DebuffChance;
@@ -41,7 +41,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DebuffDuration = DebuffDuration;
 	Params.DebuffFrequency = DebuffFrequency;
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
-	Params.KnockbackForceChance = KnockbackForceChance;
+	Params.KnockbackChance = KnockbackChance;
 	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
 
 	if (IsValid(TargetActor))
@@ -54,4 +54,9 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 		Params.KnockbackForce = ToTarget * KnockbackForceMagnitude;
 	}
 	return Params;
+}
+
+float UAuraDamageGameplayAbility::GetDamageAtLevel() const
+{
+	return Damage.GetValueAtLevel(GetAbilityLevel());
 }

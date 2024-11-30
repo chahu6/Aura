@@ -240,6 +240,30 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	);
 
 	/*
+	 * Player Input Tags
+	 */
+
+	GameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.CursorTrace"),
+		FString("Block tracing under the cursor")
+	);
+
+	GameplayTags.Player_Block_InputPress = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.InputPress"),
+		FString("Block Input Press callback for Input")
+	);
+
+	GameplayTags.Player_Block_InputHeld = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.InputHeld"),
+		FString("Block Input Held callback for Input")
+	);
+
+	GameplayTags.Player_Block_InputReleased = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Player.Block.InputReleased"),
+		FString("Block Input Released callback for Input")
+	);
+
+	/*
 	 * Abilities
 	 */
 

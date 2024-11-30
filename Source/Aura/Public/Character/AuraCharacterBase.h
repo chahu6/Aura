@@ -23,6 +23,7 @@ class AURA_API AAuraCharacterBase : public ACharacter, public ICombatInterface, 
 
 public:
 	AAuraCharacterBase();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	/** Ability System Interface */
@@ -43,6 +44,10 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() const override;
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
 	virtual FOnDeathSignature& GetOnDeathDelegate() override;
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+	virtual bool IsBeingShocked_Implementation() const override;
+
 	/** end Combat Interface */
 
 	FOnASCRegistered OnASCRegisteredDelegate;
@@ -50,6 +55,21 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath(const FVector& DeathImpulse);
+
+	UPROPERTY(Replicatedusing=OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(Replicatedusing = OnRep_Burned, BlueprintReadOnly)
+	bool bIsBurned = false;
+	UFUNCTION()
+	virtual void OnRep_Burned();
+	virtual void BurnTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
 
 protected:
 	virtual void InitAbilityActorInfo();
@@ -67,6 +87,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
+
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName WeaponTipSocketName;
 
@@ -81,6 +104,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 600.f;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

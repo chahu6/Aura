@@ -55,7 +55,7 @@ struct FDamageEffectParams
 	FVector DeathImpulse = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite)
-	float KnockbackForceChance = 0.f;
+	float KnockbackChance = 0.f;
 
 	UPROPERTY(BlueprintReadWrite)
 	float KnockbackForceMagnitude = 0.f;

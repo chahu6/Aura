@@ -6,6 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "AuraAnimInstance.generated.h"
 
+class AAuraCharacter;
+
 /**
  * 
  */
@@ -21,7 +23,7 @@ public:
 
 private:
 	UPROPERTY(BlueprintReadOnly, Category = "Animation", meta=(AllowPrivateAccess = "true"))
-	class AAuraCharacter* AuraCharacter;
+	TObjectPtr<AAuraCharacter> AuraCharacter;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Animation", meta = (AllowPrivateAccess = "true"))
 	float GroundSpeed;

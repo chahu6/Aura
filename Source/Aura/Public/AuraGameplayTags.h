@@ -68,6 +68,11 @@ public:
 
 	FGameplayTag Effects_HitReact;
 
+	FGameplayTag Player_Block_CursorTrace;
+	FGameplayTag Player_Block_InputPress;
+	FGameplayTag Player_Block_InputHeld;
+	FGameplayTag Player_Block_InputReleased;
+
 	FGameplayTag Abilities_None;
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;

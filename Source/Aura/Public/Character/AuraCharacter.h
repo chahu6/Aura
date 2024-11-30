@@ -47,6 +47,9 @@ private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
 
+	virtual void OnRep_Stunned() override;
+	virtual void OnRep_Burned() override;
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraBoom;

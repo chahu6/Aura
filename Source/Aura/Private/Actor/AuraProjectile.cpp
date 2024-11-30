@@ -36,10 +36,7 @@ void AAuraProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (HasAuthority())
-	{
-		Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
-	}
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraProjectile::OnSphereOverlap);
 }
 
 void AAuraProjectile::BeginPlay()
@@ -48,22 +45,20 @@ void AAuraProjectile::BeginPlay()
 
 	SetLifeSpan(LifeSpan);
 
+	/**
+	* 设置此参与者的动作是否复制到网络客户端。
+	* @param bInReplicateMovement此Actor的移动是否复制到客户端。
+	*/
+	SetReplicateMovement(true); // 虚函数不要在构造函数中用
+
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
 }
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	if (!IsValidOverlap(OtherActor)) return;
 
-	if (SourceAvatarActor == OtherActor) return;
-	if (!UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return;
-
-	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	if (LoopingSoundComponent)
-	{
-		LoopingSoundComponent->Stop();
-	}
+	if (!bHit) OnHit();
 
 	if (HasAuthority())
 	{
@@ -72,7 +67,7 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
 			DamageEffectParams.DeathImpulse = DeathImpulse;
 
-			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackForceChance;
+			const bool bKnockback = FMath::RandRange(1, 100) < DamageEffectParams.KnockbackChance;
 			if (bKnockback)
 			{
 				FRotator Rotation = GetActorRotation();
@@ -89,23 +84,41 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 		Destroy();
 	}
-	else
-	{
-		bHit = true;
-	}
 }
 
 void AAuraProjectile::Destroyed()
 {
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
+
 	if (!bHit && !HasAuthority())
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		if (LoopingSoundComponent)
-		{
-			LoopingSoundComponent->Stop();
-		}
+		OnHit();
 	}
 
 	Super::Destroyed();
+}
+
+void AAuraProjectile::OnHit()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+	}
+	bHit = true;
+}
+
+bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
+{
+	if (DamageEffectParams.SourceAbilitySystemComponent == nullptr) return false;
+	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	if (SourceAvatarActor == OtherActor) return false;
+	if (!UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return false;
+
+	return true;
 }
