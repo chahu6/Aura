@@ -28,7 +28,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 
 	GetAuraASC()->ForEachAbility([this](const FGameplayAbilitySpec& AbilitySpec) {
 		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AuraAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+		Info.InputTag = AuraAbilitySystemComponent->GetSlotFromSpec(AbilitySpec);
 		Info.StatusTag = AuraAbilitySystemComponent->GetStatusFromSpec(AbilitySpec);
 		AbilityInfoSignature.Broadcast(Info);
 	});
