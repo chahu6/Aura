@@ -16,6 +16,7 @@ class UAuraInputConfig;
 class UAuraAbilitySystemComponent;
 class USplineComponent;
 class UNiagaraSystem;
+class AMagicCircle;
 
 /**
  * 
@@ -30,6 +31,12 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ClientShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+
+	UFUNCTION(BlueprintCallable)
+	void HideMagicCircle();
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,6 +54,8 @@ private:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 
 	void AutoRun();
+
+	void UpdateMagicCircleLocation();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
@@ -90,4 +99,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
 };
