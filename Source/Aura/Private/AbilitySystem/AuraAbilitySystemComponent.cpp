@@ -44,6 +44,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 {
 	if (!InputTag.IsValid()) return;
 
+	ABILITYLIST_SCOPE_LOCK()
 	for (FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
@@ -61,6 +62,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 {
 	if (!InputTag.IsValid()) return;
 
+	ABILITYLIST_SCOPE_LOCK()
 	for (FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
